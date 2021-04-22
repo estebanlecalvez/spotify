@@ -246,7 +246,7 @@ class App extends Component {
                     <div className="d-flex flex-row-reverse">
                       {/* Here is the search bar, a search will be fired when we hit enter */}
                       <div className="input-group rounded">
-                        <input value={this.state.value} onKeyDown={this.handleSearch} type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
+                        <input style={{ margin: "10px" }} value={this.state.value} onKeyDown={this.handleSearch} type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
                           aria-describedby="search-addon" />
                       </div>
 
@@ -259,7 +259,7 @@ class App extends Component {
                         this.setState({
                           isOnFavoritesPage: true
                         });
-                      }}><Stars style={{ width: "20px", height: "20px" }} /></a>
+                      }}><Stars style={{ margin: "10px", cursor: "pointer", width: "30px", height: "30px" }} /></a>
                     </div>
                   </div>
                 </div>
@@ -270,26 +270,33 @@ class App extends Component {
         </div>
         <div className="content">
           <div className="container">
-            <div className="row">
-              {/* Here is the content of the page */}
-              {this.state.isOnFavoritesPage === true ?
-                <div >
-                  <h1>Favorites</h1>
-
-                  {this.state.favorites != null ?
-                    <div className="row">
-                      {favorites}
-                    </div>
-                    : null}
-                </div>
-                :
-                albums}
-
-
+            <div className="col-1">
             </div>
+            <div className="col-10">
+
+              <div className="row">
+
+                {/* Here is the content of the page */}
+                {this.state.isOnFavoritesPage === true ?
+                  <div >
+                    <h1>Favorites</h1>
+
+                    {this.state.favorites != null ?
+                      <div className="row">
+                        {favorites}
+                      </div>
+                      : null}
+                  </div>
+                  :
+                  albums}
+              </div>
+            </div>
+
+
           </div>
         </div>
-      </div >
+        <div className="col-1"></div>
+      </div>
     );
   }
 }
