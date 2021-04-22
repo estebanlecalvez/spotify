@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'reactstrap';
 import "./App.css";
-import { Star, StarFill } from 'react-bootstrap-icons';
+import { Star, StarFill, Stars } from 'react-bootstrap-icons';
 
 
 //Here is all we need to get access to spotify's API
@@ -29,7 +29,10 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { token: null };
+    this.state = {
+      token: null,
+      isOnFavoritesPage: false
+    };
   }
   componentDidMount() {
     // Set token
@@ -47,7 +50,8 @@ class App extends Component {
           name: "",
           profile_picture: ""
         },
-        searchValue: ""
+        searchValue: "",
+        albums_duration: []
       });
       this.getUser(`Bearer ${_token}`);
     };
@@ -56,6 +60,9 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddFavorites = this.handleAddFavorites.bind(this);
     this.handleRemoveFavorites = this.handleRemoveFavorites.bind(this);
+    // this.getAnAlbum = this.getTotalDuration.bind(this);
+    // this.getDurationOfAlbum = this.getDurationOfAlbum.bind(this);
+    // this.getTotalDuration = this.getTotalDuration.bind(this);
 
 
   }
@@ -75,30 +82,74 @@ class App extends Component {
           isLoadedMe: true,
         });
       });
+  }
+
+  getAnAlbum(id) {
 
   }
 
   //Function that'll be called everytime you hit enter while searching through albums.
   handleSearch(event) {
-    if (event.key === 'Enter') {
-      this.setState({ searchValue: event.target.value });
-      fetch(`https://api.spotify.com/v1/search?q=${event.target.value}&limit=20&type=album`, {
-        type: "GET",
-        headers: { "Authorization": this.state.access_token }
-      }).then((res) => res.json())
-        .then(data => {
-          console.log(data.albums.items);
-          this.setState({
-            albums: data.albums.items
+    if (event.target.value !== undefined && event.target.value !== "") {
+      if (event.key === 'Enter') {
+        this.setState({ searchValue: event.target.value });
+        fetch(`https://api.spotify.com/v1/search?q=${event.target.value}&limit=20&type=album`, {
+          type: "GET",
+          headers: { "Authorization": this.state.access_token }
+        }).then((res) => res.json())
+          .then(data => {
+            this.setState({
+              isOnFavoritesPage: false,
+              albums: data.albums.items
+            });
           });
-        });
+        // for (const album in this.state.albums) {
+        //   this.getTotalDuration(album.id);
+        // }
+      }
     }
+
   }
 
+  // getDurationOfAlbum(id) {
+  //   console.log(this.state.albums_duration);
+  //   console.log("longueur du tableau:", this.state.albums_duration.length);
+  //   for (var i = 0; i < this.state.albums_duration.length; i++) {
+  //     // console.log(this.state.albums_duration[i].id);
+  //     if (this.state.albums_duration[i].id === id) {
+  //       // console.log("we found a match with id : "+id);
+  //       // console.log("the duration of this album is : "+this.state.albums_duration[i]);
+  //       return this.state.albums_duration[i].duration;
+  //     }
+  //   }
+  // 
+  // }
+
+  //Function to get an Album to return his duration by looping through all tracks duration.
+  // getTotalDuration(id) {
+  //   fetch(`https://api.spotify.com/v1/albums/${id}`, {
+  //     type: "GET",
+  //     headers: { "Authorization": this.state.access_token }
+  //   }).then((res) => res.json())
+  //     .then(data => {
+  //       this.setState({ albumDurations: [] });
+  //       var totalDuration = 0;
+  //       const items = data.tracks["items"];
+  //       //Ne fonctionnait pas avec un foreach 
+  //       for (var i = 0; i < items.length; i++) {
+  //         totalDuration = totalDuration + items[i].duration_ms;
+  //       }
+  //       console.log("total duration : " + totalDuration);
+  //       var albumDurations = this.state.albumDurations;
+  //       albumDurations.push({ id: id, duration: totalDuration });
+  //       this.setState({ albums_duration: albumDurations });
+  //     });
+  // }
+
   //Function that'll be called when you click on the star icon. This will add the album to your favorites
-  handleAddFavorites(id) {
+  handleAddFavorites(album) {
     var favorites = this.state.favorites;
-    favorites.push(id);
+    favorites.push(album);
     this.setState({
       favorites: favorites
     });
@@ -106,9 +157,13 @@ class App extends Component {
   }
 
   //Function that'll be called when you click on the star icon. This will remove the album to your favorites
-  handleRemoveFavorites(id) {
+  handleRemoveFavorites(album) {
     var favorites = this.state.favorites;
-    const index = favorites.indexOf(id);
+    const index = favorites.indexOf(album);
+    // for (var i = 0; favorites.length; i++) {
+    //   if (favorites[i].id == id) {
+
+    //   }
     if (index > -1) {
       favorites.splice(index, 1);
     }
@@ -118,24 +173,49 @@ class App extends Component {
     console.log(favorites);
   }
 
+
+
+
   render() {
     //a map of the albums var in the state that allow to see image, name, duration and release date.
     //You also have a star to add or remove an album from your favorites.
     var albums = this.state.albums && (this.state.albums.map((album) =>
-      <div className="card" >
+      <div id={album.id} className="card" >
         <img className="card-img-top" src={album.images[0].url} alt="Card image cap" />
         <div className="card-body">
           <h5 className="card-title">{album.name}</h5>
+          {/* <p>Duration:{this.getDurationOfAlbum(album.id)}</p> */}
+          <p>{album.release_date}</p>
           {/* Here we are checking if the album is in favorites or not to show a different icon 
           if the album is in favorites, this will remove it by clicking on the icon
           If the album is not in your favorites, this will remove it by clicking on the icon */}
-          {this.state.favorites.includes(album.id) ?
-            <a onClick={() => { this.handleRemoveFavorites(album.id) }}><StarFill></StarFill></a>
+          {this.state.favorites.includes(album) ?
+            <a onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
             :
-            <a onClick={() => { this.handleAddFavorites(album.id) }}><Star></Star></a>
+            <a onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
           }
         </div>
       </div >
+
+    ));
+    var favorites = this.state.albums && (this.state.favorites.map((album) =>
+      <div id={album.id} className="card" >
+        <img className="card-img-top" src={album.images[0].url} alt="Card image cap" />
+        <div className="card-body">
+          <h5 className="card-title">{album.name}</h5>
+          {/* <p>Duration:{this.getDurationOfAlbum(album.id)}</p> */}
+          <p>{album.release_date}</p>
+          {/* Here we are checking if the album is in favorites or not to show a different icon 
+        if the album is in favorites, this will remove it by clicking on the icon
+        If the album is not in your favorites, this will remove it by clicking on the icon */}
+          {this.state.favorites.includes(album) ?
+            <a onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
+            :
+            <a onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
+          }
+        </div>
+      </div >
+
     ));
     return (
       <div className="App">
@@ -157,19 +237,29 @@ class App extends Component {
               <div className="container">
                 <div className="row">
 
-                  <div className="col" style={{ textAlign: "left" }}>
+                  <div className="col-4" style={{ textAlign: "left" }}>
 
                     <img alt="Image placeholder" className="avatar" src={this.state.me.image} />
                     <a style={{ padding: "10px 10px 10px 10px" }}> {this.state.me.name}</a>
                   </div>
-                  <div className="col" >
+                  <div className="col-6" >
                     <div className="d-flex flex-row-reverse">
-
                       {/* Here is the search bar, a search will be fired when we hit enter */}
                       <div className="input-group rounded">
-                        <input value={this.state.value} onKeyDown={this.handleSearch} type="search" className="form-control rounded"  placeholder="Search" aria-label="Search"
+                        <input value={this.state.value} onKeyDown={this.handleSearch} type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
                           aria-describedby="search-addon" />
                       </div>
+
+                    </div>
+                  </div>
+                  <div className="col-2" >
+                    <div className="d-flex flex-row-reverse">
+
+                      <a onClick={() => {
+                        this.setState({
+                          isOnFavoritesPage: true
+                        });
+                      }}><Stars style={{ width: "20px", height: "20px" }} /></a>
                     </div>
                   </div>
                 </div>
@@ -182,7 +272,19 @@ class App extends Component {
           <div className="container">
             <div className="row">
               {/* Here is the content of the page */}
-              {albums}
+              {this.state.isOnFavoritesPage === true ?
+                <div >
+                  <h1>Favorites</h1>
+
+                  {this.state.favorites != null ?
+                    <div className="row">
+                      {favorites}
+                    </div>
+                    : null}
+                </div>
+                :
+                albums}
+
 
             </div>
           </div>
