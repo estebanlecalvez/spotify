@@ -9,6 +9,10 @@ import { Star, StarFill } from 'react-bootstrap-icons';
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
 const clientId = "3e27eb94a5ef4ac08a3272955aac5503";
 const redirectUri = "http://localhost:3000";
+const scopes = [
+  "user-read-currently-playing",
+  "user-read-playback-state",
+];
 // Get the hash of the url
 const hash = window.location.hash
   .substring(1)
@@ -141,7 +145,7 @@ class App extends Component {
             <Button color="success"
               href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
               Login to Spotify</Button>
-              // Else we remove the login button
+            // Else we remove the login button
             : null
           }
           {/* If the user is not loaded, we show a spinner (loading indicator) */}
@@ -163,7 +167,7 @@ class App extends Component {
 
                       {/* Here is the search bar, a search will be fired when we hit enter */}
                       <div className="input-group rounded">
-                        <input value={this.state.value} onKeyDown={this.handleSearch} type="search" className="form-control rounded" style={{ maxWidth: "200px" }} placeholder="Search" aria-label="Search"
+                        <input value={this.state.value} onKeyDown={this.handleSearch} type="search" className="form-control rounded"  placeholder="Search" aria-label="Search"
                           aria-describedby="search-addon" />
                       </div>
                     </div>
