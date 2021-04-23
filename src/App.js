@@ -83,9 +83,7 @@ class App extends Component {
       });
   }
 
-  getAnAlbum(id) {
 
-  }
 
   //Function that'll be called everytime you hit enter while searching through albums.
   handleSearch(event) {
@@ -169,10 +167,7 @@ class App extends Component {
     console.log(favorites);
   }
 
-  changeSelectedAlbum(id) {
-    const album = this.getAnAlbum(id);
-    // album.push({isSelected:!isSelected});
-  }
+ 
 
 
   render() {
