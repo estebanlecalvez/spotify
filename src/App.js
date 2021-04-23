@@ -184,9 +184,9 @@ class App extends Component {
           if the album is in favorites, this will remove it by clicking on the icon
           If the album is not in your favorites, this will remove it by clicking on the icon */}
           {this.state.favorites.includes(album) ?
-            <a href="/" onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
+            <label onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></label>
             :
-            <a href="/" onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
+            <label  onClick={() => { this.handleAddFavorites(album) }}><Star></Star></label>
           }
         </div>
       </div >
@@ -204,9 +204,9 @@ class App extends Component {
         if the album is in favorites, this will remove it by clicking on the icon
         If the album is not in your favorites, this will remove it by clicking on the icon */}
           {this.state.favorites.includes(album) ?
-            <a href="/" onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
+            <label onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></label>
             :
-            <a href="/" onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
+            <label onClick={() => { this.handleAddFavorites(album) }}><Star></Star></label>
           }
         </div>
       </div >
@@ -236,7 +236,7 @@ class App extends Component {
                   <div className="col-4" style={{ textAlign: "left" }}>
 
                     <img alt="avatar" className="avatar" src={this.state.me.image} />
-                    <a href="/" style={{ padding: "10px 10px 10px 10px" }}> {this.state.me.name}</a>
+                    <label style={{ padding: "10px 10px 10px 10px" }}> {this.state.me.name}</label>
                   </div>
                   <div className="col-6" >
                     <div className="d-flex flex-row-reverse">
@@ -251,11 +251,11 @@ class App extends Component {
                   <div className="col-2" >
                     <div className="d-flex flex-row-reverse">
 
-                      <a href="/" onClick={() => {
+                      <label onClick={() => {
                         this.setState({
                           isOnFavoritesPage: true
                         });
-                      }}><Stars style={{ margin: "10px", cursor: "pointer", width: "30px", height: "30px" }} /></a>
+                      }}><Stars style={{ margin: "10px", cursor: "pointer", width: "30px", height: "30px" }} /></label>
                     </div>
                   </div>
                 </div>
