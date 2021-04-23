@@ -7,7 +7,8 @@ import { Star, StarFill, Stars } from 'react-bootstrap-icons';
 //Here is all we need to get access to spotify's API
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
 const clientId = "3e27eb94a5ef4ac08a3272955aac5503";
-const redirectUri = "http://localhost:3000";
+// const redirectUri = "http://localhost:3000/";
+const redirectUri = "https://spotifylike.netlify.app/";
 const scopes = [
   "user-read-currently-playing",
   "user-read-playback-state",
