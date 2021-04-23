@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'reactstrap';
 import "./App.css";
 import { Star, StarFill, Stars } from 'react-bootstrap-icons';
 
@@ -103,9 +102,6 @@ class App extends Component {
               albums: data.albums.items
             });
           });
-        // for (const album in this.state.albums) {
-        //   this.getTotalDuration(album.id);
-        // }
       }
     }
 
@@ -173,7 +169,10 @@ class App extends Component {
     console.log(favorites);
   }
 
-
+  changeSelectedAlbum(id) {
+    const album = this.getAnAlbum(id);
+    // album.push({isSelected:!isSelected});
+  }
 
 
   render() {
@@ -199,6 +198,7 @@ class App extends Component {
 
     ));
     var favorites = this.state.albums && (this.state.favorites.map((album) =>
+
       <div id={album.id} className="card" >
         <img className="card-img-top" src={album.images[0].url} alt="Card image cap" />
         <div className="card-body">
@@ -222,9 +222,10 @@ class App extends Component {
         <div className="header">
           {/* If the user is not connected we can't use Spotify's API so we have to log in to get a token */}
           {this.state.token === null ?
-            <Button color="success"
-              href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
-              Login to Spotify</Button>
+            <a className="btn btn-success" href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
+
+              Login to Spotify
+            </a>
             // Else we remove the login button
             : null
           }
