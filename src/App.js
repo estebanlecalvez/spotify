@@ -167,7 +167,7 @@ class App extends Component {
     console.log(favorites);
   }
 
- 
+
 
 
   render() {
@@ -175,7 +175,7 @@ class App extends Component {
     //You also have a star to add or remove an album from your favorites.
     var albums = this.state.albums && (this.state.albums.map((album) =>
       <div id={album.id} className="card" >
-        <img className="card-img-top" src={album.images[0].url} alt="Card image cap" />
+        <img className="card-img-top" src={album.images[0].url} alt="pochette d'album" />
         <div className="card-body">
           <h5 className="card-title">{album.name}</h5>
           {/* <p>Duration:{this.getDurationOfAlbum(album.id)}</p> */}
@@ -184,9 +184,9 @@ class App extends Component {
           if the album is in favorites, this will remove it by clicking on the icon
           If the album is not in your favorites, this will remove it by clicking on the icon */}
           {this.state.favorites.includes(album) ?
-            <a onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
+            <a href="/" onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
             :
-            <a onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
+            <a href="/" onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
           }
         </div>
       </div >
@@ -195,7 +195,7 @@ class App extends Component {
     var favorites = this.state.albums && (this.state.favorites.map((album) =>
 
       <div id={album.id} className="card" >
-        <img className="card-img-top" src={album.images[0].url} alt="Card image cap" />
+        <img className="card-img-top" src={album.images[0].url} alt="Card  cap" />
         <div className="card-body">
           <h5 className="card-title">{album.name}</h5>
           {/* <p>Duration:{this.getDurationOfAlbum(album.id)}</p> */}
@@ -204,9 +204,9 @@ class App extends Component {
         if the album is in favorites, this will remove it by clicking on the icon
         If the album is not in your favorites, this will remove it by clicking on the icon */}
           {this.state.favorites.includes(album) ?
-            <a onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
+            <a href="/" onClick={() => { this.handleRemoveFavorites(album) }}><StarFill></StarFill></a>
             :
-            <a onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
+            <a href="/" onClick={() => { this.handleAddFavorites(album) }}><Star></Star></a>
           }
         </div>
       </div >
@@ -235,8 +235,8 @@ class App extends Component {
 
                   <div className="col-4" style={{ textAlign: "left" }}>
 
-                    <img alt="Image placeholder" className="avatar" src={this.state.me.image} />
-                    <a style={{ padding: "10px 10px 10px 10px" }}> {this.state.me.name}</a>
+                    <img alt="avatar" className="avatar" src={this.state.me.image} />
+                    <a href="/" style={{ padding: "10px 10px 10px 10px" }}> {this.state.me.name}</a>
                   </div>
                   <div className="col-6" >
                     <div className="d-flex flex-row-reverse">
@@ -251,7 +251,7 @@ class App extends Component {
                   <div className="col-2" >
                     <div className="d-flex flex-row-reverse">
 
-                      <a onClick={() => {
+                      <a href="/" onClick={() => {
                         this.setState({
                           isOnFavoritesPage: true
                         });
